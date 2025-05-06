@@ -13,17 +13,14 @@
       padding: 20px;
       background: #f8f9fa;
     }
-    h1 {
-      text-align: center;
-      color: #2c3e50;
-      font-size: 2rem;
-    }
+
     .menu {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 20px;
       margin-top: 30px;
     }
+
     .item {
       background: white;
       padding: 15px;
@@ -32,22 +29,28 @@
       text-align: center;
       transition: transform 0.2s;
     }
+
     .item:hover {
       transform: scale(1.02);
     }
+
     .item img {
       width: 100%;
-      height: 150px;
+      height: 120px;
       object-fit: cover;
       border-radius: 10px;
       transition: transform 0.3s;
+      background-color: #eee;
     }
+
     .item img:hover {
       transform: scale(1.05);
     }
+
     .item h3, .item p {
       margin: 10px 0 5px;
     }
+
     .item button {
       margin-top: 10px;
       padding: 8px 16px;
@@ -57,6 +60,7 @@
       border-radius: 6px;
       cursor: pointer;
     }
+
     .cart-btn {
       position: fixed;
       bottom: 30px;
@@ -70,6 +74,7 @@
       cursor: pointer;
       box-shadow: 0 8px 16px rgba(0,0,0,0.15);
     }
+
     .cart-preview {
       position: fixed;
       bottom: 90px;
@@ -83,24 +88,29 @@
       display: none;
       padding: 20px;
     }
+
     .cart-preview h4 {
       margin-top: 0;
     }
+
     .cart-preview ul {
       list-style: none;
       padding-left: 0;
     }
+
     .cart-preview li {
       margin: 8px 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
+
     .qty-btns {
       display: flex;
       align-items: center;
       gap: 5px;
     }
+
     .qty-btns button {
       background: #ddd;
       border: none;
@@ -110,6 +120,7 @@
       cursor: pointer;
       font-weight: bold;
     }
+
     .checkout-btn {
       width: 100%;
       padding: 10px;
@@ -121,6 +132,7 @@
       font-size: 1rem;
       cursor: pointer;
     }
+
     .toast {
       position: fixed;
       bottom: 20px;
@@ -135,23 +147,42 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.2);
       z-index: 999;
     }
+
+    .search-bar {
+      max-width: 400px;
+      margin: 20px auto;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
   </style>
 </head>
 <body>
   <nav class="flex justify-between items-center p-4 shadow-md bg-white sticky top-0 z-10">
-    <h1 class="text-xl font-bold text-brown-800">OASIS ESPRESSO</h1>
+    <h1 class="text-xl font-bold text-gray-800">OASIS ESPRESSO</h1>
     <ul class="flex gap-6 text-sm font-semibold">
       <li><a href="index.html" class="hover:text-yellow-700">Home</a></li>
-      <li><a href="menu.html" class="hover:text-yellow-700">Menu</a></li>
-      <li><a href="about.html" class="text-yellow-700 font-bold">About</a></li>
+      <li><a href="menu.html" class="text-yellow-700 font-bold">Menu</a></li>
+      <li><a href="about.html" class="hover:text-yellow-700">About</a></li>
       <li><a href="contact.html" class="hover:text-yellow-700">Contact</a></li>
     </ul>
   </nav>
-  <br>
 
-  <h1>OASIS ESPRESSO CAFE</h1>
-  <h1>🥗 Our Menu</h1>
+  <div class="text-center mt-6">
+    <h1 class="text-2xl font-bold text-gray-800">🥗 Our Menu</h1>
+  </div>
+
+  <div class="search-bar">
+    <input type="text" placeholder="Search menu item..." id="searchInput" oninput="renderMenu()" />
+  </div>
+
   <div class="menu" id="menu-container"></div>
+
   <button class="cart-btn" onclick="toggleCart()">🛒 Cart (<span id="cart-count">0</span>)</button>
 
   <div class="cart-preview" id="cart">
@@ -165,46 +196,50 @@
 
   <script>
     const menu = [
-      { id: 1, name: "Cold Coffee", price: 99, img: "https://media.istockphoto.com/id/1324007808/photo/dalgona-coffee-with-coffee-beans-on-table.webp?s=1024x1024&w=is&k=20&c=x-HQbmBL5TW5-ioU1wtRS4dhKFbeBSV_pqJ-SF2D5Mo="  },
-      { id: 2, name: "French Fries", price: 89, img: "https://media.istockphoto.com/id/502893771/photo/french-fries-12.webp?s=1024x1024&w=is&k=20&c=I_R2C8jIRMYuhqmnaVxaC2KEmhSWWt-sQMTcds929JE=" },
-      // { id: 3, name: "Paneer Tikka", price: 219, img: "https://images.pexels.com/photos/4064552/pexels-photo-4064552.jpeg" },
-      { id: 4, name: "Cappuccino", price: 129, img: "https://media.istockphoto.com/id/505168330/photo/cup-of-cafe-latte-with-coffee-beans-and-cinnamon-sticks.webp?s=1024x1024&w=is&k=20&c=kXeItl86M_hlo05MA5S2fyiMvBIfZanPwzBccgMG8GI=" },
-      { id: 8, name: "Espresso Shot", price: 89, img: "https://media.istockphoto.com/id/157509191/photo/double-espresso-shot.webp?s=1024x1024&w=is&k=20&c=xJ6Y0xdBTcTEwAtahcUJato8dl8eeVT0eBwWnNmGxDY=" },
-      {id: 9, name: "Hot Chocolate", price: 149, img: "https://cdn.pixabay.com/photo/2020/12/13/13/29/hot-chocolate-5828239_1280.jpg" },
-     { id: 10, name: "Iced Americano", price: 139, img: "https://cdn.pixabay.com/photo/2015/11/02/07/10/coffee-1018062_1280.jpg" },
-     { id: 11, name: "Latte (Hazelnut)", price: 159, img: "https://cdn.pixabay.com/photo/2023/05/14/08/43/coffee-7992226_960_720.jpg" },
+    { id: 1, name: "Cold Coffee", price: 99, img: "https://media.istockphoto.com/id/1324007808/photo/dalgona-coffee-with-coffee-beans-on-table.webp?s=1024x1024&w=is&k=20&c=x-HQbmBL5TW5-ioU1wtRS4dhKFbeBSV_pqJ-SF2D5Mo="  },
+       { id: 2, name: "French Fries", price: 89, img: "https://media.istockphoto.com/id/502893771/photo/french-fries-12.webp?s=1024x1024&w=is&k=20&c=I_R2C8jIRMYuhqmnaVxaC2KEmhSWWt-sQMTcds929JE=" },
+       // { id: 3, name: "Paneer Tikka", price: 219, img: "https://images.pexels.com/photos/4064552/pexels-photo-4064552.jpeg" },
+       { id: 4, name: "Cappuccino", price: 129, img: "https://media.istockphoto.com/id/505168330/photo/cup-of-cafe-latte-with-coffee-beans-and-cinnamon-sticks.webp?s=1024x1024&w=is&k=20&c=kXeItl86M_hlo05MA5S2fyiMvBIfZanPwzBccgMG8GI=" },
+       { id: 8, name: "Espresso Shot", price: 89, img: "https://media.istockphoto.com/id/157509191/photo/double-espresso-shot.webp?s=1024x1024&w=is&k=20&c=xJ6Y0xdBTcTEwAtahcUJato8dl8eeVT0eBwWnNmGxDY=" },
+      { id: 9, name: "Hot Chocolate", price: 149, img: "https://cdn.pixabay.com/photo/2020/12/13/13/29/hot-chocolate-5828239_1280.jpg" },
+      { id: 10, name: "Iced Americano", price: 139, img: "https://cdn.pixabay.com/photo/2015/11/02/07/10/coffee-1018062_1280.jpg" },
+      { id: 11, name: "Latte (Hazelnut)", price: 159, img: "https://cdn.pixabay.com/photo/2023/05/14/08/43/coffee-7992226_960_720.jpg" },
       { id: 12, name: "Mocha Frappe", price: 169, img: "https://cdn.pixabay.com/photo/2018/01/31/09/58/coffee-3120757_1280.jpg" },
       { id: 13, name: "Chocolate Brownie", price: 109, img: "https://cdn.pixabay.com/photo/2019/07/28/04/56/sweets-4367937_1280.jpg" },
       { id: 14, name: "Red Velvet Cake", price: 129, img: "https://cdn.pixabay.com/photo/2016/02/29/00/19/cake-1227842_960_720.jpg" },
       { id: 15, name: "Choco Lava Cake", price: 139, img: "https://cdn.pixabay.com/photo/2024/04/21/18/43/ai-generated-8711271_960_720.jpg" },
       { id: 16, name: "Grilled Cheese Sandwich", price: 99, img: "https://cdn.pixabay.com/photo/2016/11/29/04/00/bread-1867208_1280.jpg" },
-      // { id: 17, name: "Veg Club Sandwich", price: 129, img: "https://images.pexels.com/photos/6275395/pexels-photo-6275395.jpeg" },
       { id: 18, name: "Paneer Wrap", price: 149, img: "https://cdn.pixabay.com/photo/2023/10/21/09/00/ai-generated-8331065_1280.jpg" },
       { id: 19, name: "Garlic Bread", price: 79, img: "https://cdn.pixabay.com/photo/2015/03/06/12/14/garlic-bread-661578_1280.jpg" },
       { id: 20, name: "Oreo Shake", price: 149, img: "https://cdn.pixabay.com/photo/2020/03/07/05/18/beverage-4908765_1280.jpg" },
       { id: 21, name: "Strawberry Milkshake", price: 139, img: "https://cdn.pixabay.com/photo/2018/04/03/19/40/milkshake-3287788_1280.png" },
-      { id: 22, name: "Mango Smoothie", price: 149, img: "https://cdn.pixabay.com/photo/2015/04/22/16/08/beverages-735008_960_720.jpg" },
+      { id: 22, name: "Mango Smoothie", price: 149, img: "https://cdn.pixabay.com/photo/2015/04/22/16/08/beverages-735008_960_720.jpg" }
     ];
 
     const cart = [];
 
-    const menuContainer = document.getElementById("menu-container");
-    const cartItems = document.getElementById("cart-items");
-    const cartTotal = document.getElementById("cart-total");
-    const cartCount = document.getElementById("cart-count");
-    const toast = document.getElementById("toast");
-
     function renderMenu() {
-      menu.forEach(item => {
+      const container = document.getElementById("menu-container");
+      const search = document.getElementById("searchInput").value.toLowerCase();
+      container.innerHTML = "";
+
+      const filtered = menu.filter(item => item.name.toLowerCase().includes(search));
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<p class="text-center col-span-full text-red-600 text-lg font-semibold">Item not available ❌</p>`;
+        return;
+      }
+
+      filtered.forEach(item => {
         const div = document.createElement("div");
         div.className = "item";
         div.innerHTML = `
-          <img src="${item.img}" alt="${item.name}">
+          <img src="${item.img}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/200x120?text=Image+Not+Found'" />
           <h3>${item.name}</h3>
           <p>₹${item.price}</p>
           <button onclick="addToCart(${item.id})">Add to Cart</button>
         `;
-        menuContainer.appendChild(div);
+        container.appendChild(div);
       });
     }
 
@@ -221,9 +256,12 @@
     }
 
     function updateCart() {
+      const cartItems = document.getElementById("cart-items");
+      const cartTotal = document.getElementById("cart-total");
+      const cartCount = document.getElementById("cart-count");
+
       cartItems.innerHTML = '';
-      let total = 0;
-      let count = 0;
+      let total = 0, count = 0;
 
       cart.forEach(item => {
         const li = document.createElement('li');
@@ -267,6 +305,7 @@
     }
 
     function showToast() {
+      const toast = document.getElementById("toast");
       toast.style.display = "block";
       setTimeout(() => toast.style.display = "none", 2000);
     }
