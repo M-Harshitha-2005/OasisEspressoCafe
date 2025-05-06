@@ -41,6 +41,21 @@
       margin-left: auto;
       margin-right: auto;
     }
+    .feedback-container {
+      margin-top: 30px;
+    }
+    textarea {
+      width: 100%;
+      height: 100px;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      resize: none;
+    }
+    .submit-feedback {
+      background: #2ecc71;
+    }
   </style>
 </head>
 <body>
@@ -50,7 +65,18 @@
     <p><strong>Token:</strong> <span id="token"></span></p>
     <ul id="bill-list"></ul>
     <p><strong>Total: ₹<span id="total"></span></strong></p>
+
+    <!-- Buttons -->
+    <button class="btn" onclick="payNow()">Pay Now</button>
     <button class="btn" onclick="downloadPDF()">Download PDF</button>
+
+    <!-- Feedback Section -->
+    <div class="feedback-container">
+      <h3>Feedback</h3>
+      <textarea id="feedbackText" placeholder="How was your experience?"></textarea>
+      <button class="btn submit-feedback" onclick="submitFeedback()">Submit Feedback</button>
+      <p id="feedback-response" style="text-align:center; color: green; display: none;">Thank you for your feedback!</p>
+    </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -87,6 +113,24 @@
       y += 10;
       doc.text(`Total: ₹${total}`, 20, y);
       doc.save(`CafeQR_Bill_${token}.pdf`);
+    }
+
+    function payNow() {
+      alert("Money Received");
+    }
+
+    function submitFeedback() {
+      const feedback = document.getElementById('feedbackText').value.trim();
+      if (feedback === "") {
+        alert("Please enter your feedback before submitting.");
+        return;
+      }
+      // Simulate submission (e.g., to backend API)
+      console.log("Feedback submitted:", feedback);
+
+      // Show thank you message
+      document.getElementById('feedback-response').style.display = "block";
+      document.getElementById('feedbackText').value = "";
     }
   </script>
 </body>
